@@ -1,28 +1,50 @@
 return {
   'nvim-treesitter/nvim-treesitter',
+  dependencies = {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+  },
   lazy = false,
   build = ':TSUpdate',
 
   config = function()
-    require('nvim-treesitter').install({
-      'javascript',
-      'typescript',
-      'tsx',
-      'json',
-      'jsdoc',
-      'html',
-      'css',
-      'regex',
-      'markdown',
-      'markdown_inline',
-      'latex',
-      -- python,
-      'lua',
-      -- 'vim',
-      -- 'vimdoc',
-      -- 'c',
-      'query',
-      -- 'dart',
+    require('nvim-treesitter').setup({
+      ensure_installed = {
+        'javascript',
+        'typescript',
+        'tsx',
+        'json',
+        'jsdoc',
+        'html',
+        'css',
+        'regex',
+        'markdown',
+        'markdown_inline',
+        'latex',
+        'lua',
+        'query',
+      },
+      textobjects = {
+        move = {
+          enable = true,
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = {
+            [']m'] = '@function.outer',
+            [']]'] = '@class.outer',
+          },
+          goto_next_end = {
+            [']M'] = '@function.outer',
+            [']['] = '@class.outer',
+          },
+          goto_previous_start = {
+            ['[m'] = '@function.outer',
+            ['[['] = '@class.outer',
+          },
+          goto_previous_end = {
+            ['[M'] = '@function.outer',
+            ['[]'] = '@class.outer',
+          },
+        },
+      },
     })
 
     vim.api.nvim_create_autocmd('FileType', {

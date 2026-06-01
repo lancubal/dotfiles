@@ -10,6 +10,9 @@ return {
         javascriptreact = { 'prettier', stop_after_first = true },
         typescriptreact = { 'prettier', stop_after_first = true },
         css = { 'prettier', stop_after_first = true },
+        c = { 'clang-format' },
+        cpp = { 'clang-format' },
+        java = { 'google-java-format' },
       },
     })
 

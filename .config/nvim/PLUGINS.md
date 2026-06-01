@@ -23,8 +23,23 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | `:n` | Saltar a la línea número `n` (ej: `:42`). |
 | `gg` | Ir al principio del archivo. |
 | `G` | Ir al final del archivo. |
+| `]m` | Ir al inicio de la siguiente función/método. |
+| `[m` | Ir al inicio de la función/método anterior. |
+| `]]` | Ir al inicio de la siguiente clase. |
+| `[[` | Ir al inicio de la clase anterior. |
 | `<Tab>` | Siguiente buffer (archivo abierto). |
 | `<S-Tab>` | Buffer anterior. |
+
+### Diagnósticos (Errores y Advertencias)
+| Atajo | Acción | Modo |
+|-------|--------|------|
+| `<leader>d` | Mostrar detalle del error bajo el cursor (Ventana flotante). | Normal |
+| `<leader>rn` | **Smart Rename**: Renombrar variable/función en todo el proyecto (LSP). | Normal |
+| `]d` | Saltar al siguiente error/advertencia. | Normal |
+| `[d` | Volver al error/advertencia anterior. | Normal |
+| `<leader>xx` | **Trouble**: Lista de todos los errores del proyecto. | Normal |
+| `<leader>xX` | **Trouble**: Lista de errores solo del archivo actual. | Normal |
+| `<leader>q` | Lista completa de errores del archivo (Quickfix). | Normal |
 
 ### Gestión de Ventanas (Splits)
 | Atajo | Acción |
@@ -50,11 +65,18 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | `<leader><Space>` | Formatear el código (LSP). | Normal |
 | `gcc` | Comentar/Descomentar línea. | Normal |
 | `J` / `K` | Mover bloque de código seleccionado hacia arriba/abajo. | Visual |
+| `Alt + j/k` | Mover línea o selección hacia abajo/arriba (como VS Code). | Normal/Visual/Insert |
+| `Alt + Shift + j/k` | Duplicar línea o selección hacia abajo/arriba (como VS Code). | Normal/Visual/Insert |
+| `Alt + Flechas` | También funciona para mover y duplicar líneas. | Normal/Visual |
+| `Enter` | Agregar línea vacía abajo (sin mover el cursor). | Normal |
+| `Shift + Enter` | Agregar línea vacía arriba (sin mover el cursor). | Normal |
 | `<leader>mp` | Abrir/Cerrar previsualización de Markdown en el navegador. | Normal |
 | `gf` | Seguir link de Obsidian `[[nota]]` (Go Follow). | Normal |
 | `<leader>bb` | Volver atrás (al buffer o posición anterior). | Normal |
 | `<leader>bf` | Ir hacia adelante en el historial de saltos. | Normal |
 | `<leader>ch` | Alternar checkbox de una tarea en Markdown. | Normal |
+| `<leader>st` | Abrir terminal en la parte inferior. | Normal |
+| `<Esc><Esc>` | Salir del modo terminal (volver a modo normal). | Terminal |
 | `<Esc>` | Limpiar el resaltado de búsqueda. | Normal |
 
 ### Telescope (Buscador Difuso)
@@ -65,6 +87,24 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | `<leader>fb` | Listar y buscar en buffers abiertos. |
 | `<leader>fr` | Archivos abiertos recientemente. |
 | `<leader>/` | Búsqueda difusa dentro del archivo actual. |
+
+### Oil.nvim (Explorador de Archivos)
+*Te permite editar tu sistema de archivos como si fuera un buffer de texto.*
+| Atajo | Acción |
+|-------|--------|
+| `-` o `<leader>e` | Abrir el explorador de archivos. |
+| `<CR>` | Abrir el archivo o directorio bajo el cursor. |
+| `-` | (Dentro de Oil) Ir al directorio padre. |
+| `<C-p>` | Abrir previsualización en una ventana flotante. |
+| `<C-c>` | Cerrar el explorador. |
+| `g.` | Mostrar/Ocultar archivos ocultos. |
+
+**Cómo crear/renombrar/borrar:**
+1.  Abre Oil con `-` o `<leader>e`.
+2.  **Crear:** Escribe el nombre de un archivo nuevo en una línea vacía.
+3.  **Renombrar:** Cambia el nombre de cualquier archivo existente (ej: `cw`).
+4.  **Borrar:** Borra la línea completa del archivo (ej: `dd`).
+5.  **Confirmar:** Ejecuta `:w` (guardar) y confirma los cambios.
 
 ---
 
@@ -79,10 +119,11 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | **telescope.nvim** | Buscador difuso ultra-rápido. |
 | **oil.nvim** | Explorador de archivos que se edita como texto. |
 | **blink.cmp** | Autocompletado (como IntelliSense). |
-| **conform.nvim** | Formateador de código automático. |
+| **conform.nvim** | Formateador de código automático (Prettier, Stylua, clang-format, google-java-format). |
 | **mason.nvim** | Gestor de servidores LSP y herramientas. |
-| **lualine.nvim** | Barra de estado inferior. |
-| **gruvbox.nvim** | Tema visual retro-moderno. |
+| **lualine.nvim** | Barra de estado inferior (tema Catppuccin). |
+| **catppuccin** | Tema visual moderno y suave (variante Mocha). |
+| **trouble.nvim** | Panel elegante para navegar por todos los errores y símbolos del proyecto. |
 | **Comment.nvim** | Comentarios fáciles con `gcc`. |
 | **nvim-surround** | Manipula paréntesis/comillas (`ys`, `ds`, `cs`). |
 | **vim-fugitive** | Comandos de Git integrados. |
