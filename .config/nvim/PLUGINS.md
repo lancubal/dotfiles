@@ -37,6 +37,7 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 |-------|--------|------|
 | `<leader>ts` | **Toggle Spell**: Activar/Desactivar corrector ortográfico. | Normal |
 | `z=` | Ver sugerencias de corrección (Menú Telescope) + Opción "Add to dictionary". | Normal |
+| `<leader>zn` | **Zpell Next**: Salta al siguiente error y abre sugerencias. | Normal |
 | `<leader>zu` | **Undo Spell**: Eliminar palabra bajo el cursor del diccionario personal. | Normal |
 | `]q` | Siguiente error ortográfico (en la lista Quickfix). | Normal |
 | `[q` | Anterior error ortográfico (en la lista Quickfix). | Normal |

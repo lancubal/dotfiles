@@ -133,7 +133,7 @@ end, { desc = '[T]oggle [S]pell checking' })
 
 vim.keymap.set('n', '<leader>zu', 'zuw', { desc = '[Z]pell [U]ndo (remove word from dictionary)' })
 
-vim.keymap.set('n', 'z=', function()
+local function spell_suggest()
   local cursor_word = vim.fn.expand('<cword>')
   if cursor_word == '' then
     return
@@ -174,5 +174,20 @@ vim.keymap.set('n', 'z=', function()
       end,
     })
     :find()
-end, { desc = 'Spell suggestions via Telescope with Add to Dictionary' })
+end
+
+vim.keymap.set('n', 'z=', spell_suggest, { desc = 'Spell suggestions via Telescope with Add to Dictionary' })
+
+vim.keymap.set('n', '<leader>zn', function()
+  -- Try to go to next quickfix item, then open suggestions
+  local ok, _ = pcall(vim.cmd, 'cnext')
+  if ok then
+    vim.cmd('normal! zz')
+    -- Small delay to let cursor move before capturing word
+    vim.defer_fn(spell_suggest, 10)
+  else
+    print("No more spelling errors.")
+  end
+end, { desc = '[Z]pell [N]ext: jump to next error and suggest' })
+
 
