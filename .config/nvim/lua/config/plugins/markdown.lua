@@ -8,6 +8,7 @@ return {
       indent = {
         enabled = true,
         skip_level = 1,
+        skip_heading = true,
       },
     },
   },
