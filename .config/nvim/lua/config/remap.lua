@@ -45,6 +45,12 @@ vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Smart Rename' })
 vim.keymap.set('n', '<Tab>', ':bn<CR>', { desc = 'Switches to next buffer' })
 vim.keymap.set('n', '<S-Tab>', ':bp<CR>', { desc = 'Switches to previous buffer' })
 
+-- Indentation
+vim.keymap.set('n', '<leader><Tab>', '>>', { desc = 'Indent line' })
+vim.keymap.set('n', '<leader><S-Tab>', '<<', { desc = 'De-indent line' })
+vim.keymap.set('v', '<leader><Tab>', '>gv', { desc = 'Indent selection' })
+vim.keymap.set('v', '<leader><S-Tab>', '<gv', { desc = 'De-indent selection' })
+
 -- Split window navigation: CTRL+<hjkl>
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })

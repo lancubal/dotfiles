@@ -103,6 +103,8 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | `<leader>hp` | **Ayuda**: Abrir esta guía de atajos en una nueva pestaña. | Normal |
 | `<leader><Space>` | Formatear el código (LSP). | Normal |
 | `gcc` | Comentar/Descomentar línea. | Normal |
+| `<leader><Tab>` | **Indentar**: Mover línea o selección a la derecha. | Normal/Visual |
+| `<leader><S-Tab>` | **De-indentar**: Mover línea o selección a la izquierda. | Normal/Visual |
 | `J` / `K` | Mover bloque de código seleccionado hacia arriba/abajo. | Visual |
 | `Alt + j/k` | Mover línea o selección hacia abajo/arriba (como VS Code). | Normal/Visual/Insert |
 | `Alt + Shift + j/k` | Duplicar línea o selección hacia abajo/arriba (como VS Code). | Normal/Visual/Insert |
