@@ -4,7 +4,12 @@ return {
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' },
     ---@module 'render-markdown'
     ---@type render_markdown.Config
-    opts = {},
+    opts = {
+      indent = {
+        enabled = true,
+        skip_level = 1,
+      },
+    },
   },
   {
     'iamcco/markdown-preview.nvim',
