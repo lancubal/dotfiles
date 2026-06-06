@@ -63,3 +63,59 @@ function Trim()
 end
 
 vim.keymap.set('n', '<Leader>tt', Trim, { desc = 'Trimmed ^M line endings' })
+
+-- Spell check current buffer and populate quickfix list
+function SpellCheckToQuickfix()
+  local qf_list = {}
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local line_count = vim.api.nvim_buf_line_count(0)
+
+  for lnum = 1, line_count do
+    local line = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1]
+    local col = 0
+    while col < #line do
+      local res = vim.fn.spellbadword(line:sub(col + 1))
+      local badword = res[1]
+      if badword == "" then
+        break
+      end
+
+      local start_idx = line:find(badword, col + 1, true)
+      if not start_idx then
+        break
+      end
+
+      table.insert(qf_list, {
+        bufnr = vim.api.nvim_get_current_buf(),
+        lnum = lnum,
+        col = start_idx,
+        text = "Misspelled: " .. badword,
+        type = 'W',
+      })
+      col = start_idx + #badword
+    end
+  end
+
+  if #qf_list > 0 then
+    vim.fn.setqflist(qf_list)
+    vim.cmd('copen')
+    vim.cmd('cfirst')
+    local has_notify, notify = pcall(require, 'notify')
+    if has_notify then
+      notify('Found ' .. #qf_list .. ' spelling errors', vim.log.levels.WARN)
+    end
+  else
+    local qf_open = false
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      if vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(win), 'buftype') == 'quickfix' then
+        qf_open = true
+        break
+      end
+    end
+    if qf_open then
+      vim.cmd('cclose')
+    end
+    vim.api.nvim_win_set_cursor(0, cursor)
+  end
+end
+

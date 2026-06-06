@@ -10,6 +10,8 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 - `<leader>`: Es una tecla especial para disparar atajos. En tu configuración es la tecla **Espacio**.
 - `<CR>`: Tecla **Enter** (Carriage Return).
 - `<Esc>`: Tecla **Escape**.
+- `<BS>`: Tecla **Retroceso** (Backspace).
+- `<Del>`: Tecla **Suprimir** (Delete).
 
 ---
 
@@ -29,6 +31,42 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | `[[` | Ir al inicio de la clase anterior. |
 | `<Tab>` | Siguiente buffer (archivo abierto). |
 | `<S-Tab>` | Buffer anterior. |
+
+### Ortografía y Gramática (Spell Check)
+| Atajo | Acción | Modo |
+|-------|--------|------|
+| `<leader>ts` | **Toggle Spell**: Activar/Desactivar corrector ortográfico. | Normal |
+| `z=` | Ver sugerencias de corrección (Menú Telescope) + Opción "Add to dictionary". | Normal |
+| `<leader>zu` | **Undo Spell**: Eliminar palabra bajo el cursor del diccionario personal. | Normal |
+| `]q` | Siguiente error ortográfico (en la lista Quickfix). | Normal |
+| `[q` | Anterior error ortográfico (en la lista Quickfix). | Normal |
+| `<leader>qc` | Cerrar la lista de errores ortográficos (Quickfix). | Normal |
+| `]s` | Saltar a la siguiente falta de ortografía. | Normal |
+| `[s` | Volver a la falta de ortografía anterior. | Normal |
+| `zg` | Añadir palabra bajo el cursor al diccionario personal. | Normal |
+| `<leader>d` | Mostrar detalle de error gramatical (LTeX) o de código. | Normal |
+
+---
+
+### Markdown y Notas (Obsidian)
+| Atajo | Acción | Modo |
+|-------|--------|------|
+| `<C-b>` | Aplicar **Negrita** (`**texto**`). | Insert/Visual |
+| `<C-i>` | Aplicar *Cursiva* (`*texto*`). | Insert/Visual |
+| `<leader>mp` | Abrir/Cerrar previsualización de Markdown en el navegador. | Normal |
+| `gf` | Seguir link de Obsidian `[[nota]]` (Go Follow). Crea la nota si no existe. | Normal |
+| `<leader>rn` | **Renombrar Nota**: Renombra el archivo actual y actualiza todos sus links. | Normal |
+| `<leader>ch` | Alternar checkbox de una tarea (`- [ ]`). | Normal |
+
+*Nota: Al guardar un archivo Markdown (`:w`), se realizará automáticamente una revisión ortográfica y se mostrarán los errores en la lista Quickfix si existen.*
+
+### Git (Control de Versiones)
+| Atajo | Acción | Modo |
+|-------|--------|------|
+| `<leader>gs` | **Neogit**: Abrir panel de estado (Staging, Commits, Push/Pull). | Normal |
+| `<leader>gd` | **Diffview**: Ver todos los cambios del proyecto. | Normal |
+| `<leader>gh` | **File History**: Historial de cambios del archivo actual. | Normal |
+| `<leader>gc` | Cerrar la vista de Diffview. | Normal |
 
 ### Diagnósticos (Errores y Advertencias)
 | Atajo | Acción | Modo |
@@ -62,12 +100,14 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | Atajo | Acción | Modo |
 |-------|--------|------|
 | `<leader>s` | Buscar y reemplazar palabra bajo el cursor en todo el archivo. | Normal |
+| `<leader>hp` | **Ayuda**: Abrir esta guía de atajos en una nueva pestaña. | Normal |
 | `<leader><Space>` | Formatear el código (LSP). | Normal |
 | `gcc` | Comentar/Descomentar línea. | Normal |
 | `J` / `K` | Mover bloque de código seleccionado hacia arriba/abajo. | Visual |
 | `Alt + j/k` | Mover línea o selección hacia abajo/arriba (como VS Code). | Normal/Visual/Insert |
 | `Alt + Shift + j/k` | Duplicar línea o selección hacia abajo/arriba (como VS Code). | Normal/Visual/Insert |
-| `Alt + Flechas` | También funciona para mover y duplicar líneas. | Normal/Visual |
+| `<C-BS>` / `<C-H>` | Borrar palabra anterior. | Insert |
+| `<C-Del>` | Borrar palabra siguiente. | Insert |
 | `Enter` | Agregar línea vacía abajo (sin mover el cursor). | Normal |
 | `Shift + Enter` | Agregar línea vacía arriba (sin mover el cursor). | Normal |
 | `<leader>mp` | Abrir/Cerrar previsualización de Markdown en el navegador. | Normal |
@@ -113,20 +153,21 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | Plugin | Descripción |
 |--------|-------------|
 | **nvim-treesitter** | Resaltado de sintaxis inteligente. |
+| **nvim-treesitter-context** | Muestra el bloque/función actual fijo en la parte superior. |
 | **render-markdown.nvim** | Renderiza el Markdown directamente en Neovim (iconos, encabezados, LaTeX). |
-| **markdown-preview.nvim** | Previsualización en tiempo real en el navegador (usa `<leader>mp`). Soporta LaTeX y diagramas. |
+| **markdown-preview.nvim** | Previsualización en tiempo real en el navegador (usa `<leader>mp`). |
 | **obsidian.nvim** | Soporte para bóvedas de Obsidian, links `[[ ]]` y gestión de notas. |
 | **telescope.nvim** | Buscador difuso ultra-rápido. |
+| **neogit** | Interfaz visual interactiva para Git (clon de Magit). |
+| **diffview.nvim** | El mejor visor de diferencias y resolución de conflictos. |
 | **oil.nvim** | Explorador de archivos que se edita como texto. |
 | **blink.cmp** | Autocompletado (como IntelliSense). |
-| **conform.nvim** | Formateador de código automático (Prettier, Stylua, clang-format, google-java-format). |
-| **mason.nvim** | Gestor de servidores LSP y herramientas. |
+| **conform.nvim** | Formateador de código automático. |
+| **mason.nvim** | Gestor de servidores LSP (incluyendo LTeX-ls para gramática). |
 | **lualine.nvim** | Barra de estado inferior (tema Catppuccin). |
 | **catppuccin** | Tema visual moderno y suave (variante Mocha). |
-| **trouble.nvim** | Panel elegante para navegar por todos los errores y símbolos del proyecto. |
+| **trouble.nvim** | Panel elegante para navegar por errores y símbolos. |
 | **Comment.nvim** | Comentarios fáciles con `gcc`. |
 | **nvim-surround** | Manipula paréntesis/comillas (`ys`, `ds`, `cs`). |
-| **vim-fugitive** | Comandos de Git integrados. |
-| **twilight.nvim** | Modo enfoque (atenúa código circundante). |
--fugitive** | Comandos de Git integrados. |
+| **vim-fugitive** | Comandos de Git de bajo nivel. |
 | **twilight.nvim** | Modo enfoque (atenúa código circundante). |

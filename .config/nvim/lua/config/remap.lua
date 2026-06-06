@@ -77,6 +77,12 @@ vim.keymap.set('n', '<leader>bf', '<C-i>', { desc = 'Jump forward to next locati
 vim.keymap.set('n', '-', '<cmd>Oil<CR>', { desc = 'Open parent directory' })
 vim.keymap.set('n', '<leader>e', '<cmd>Oil<CR>', { desc = 'Open Oil explorer' })
 
+-- Git (Neogit & Diffview)
+vim.keymap.set('n', '<leader>gs', '<cmd>Neogit<CR>', { desc = 'Open Neogit [G]it [S]tatus' })
+vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<CR>', { desc = 'Open [G]it [D]iffview' })
+vim.keymap.set('n', '<leader>gh', '<cmd>DiffviewFileHistory %<CR>', { desc = 'Open [G]it [H]istory for current file' })
+vim.keymap.set('n', '<leader>gc', '<cmd>DiffviewClose<CR>', { desc = '[G]it Diffview [C]lose' })
+
 -- Terminal
 vim.keymap.set('n', '<leader>st', function()
   vim.cmd.vnew()
@@ -87,6 +93,11 @@ end, { desc = 'Terminal split bottom' })
 
 -- Terminal mode escape
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- Delete whole word in insert mode
+vim.keymap.set('i', '<C-BS>', '<C-w>', { desc = 'Delete word backwards' })
+vim.keymap.set('i', '<C-H>', '<C-w>', { desc = 'Delete word backwards' })
+vim.keymap.set('i', '<C-Del>', '<C-o>dw', { desc = 'Delete word forward' })
 
 -- Add empty lines
 vim.keymap.set('n', '<CR>', 'm`o<Esc>``', { desc = 'Add empty line below' })
@@ -100,3 +111,62 @@ vim.keymap.set(
   [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
   { desc = 'Find and replace word under cursor' }
 )
+
+vim.keymap.set('n', '<leader>hp', '<cmd>tabedit ~/.config/nvim/PLUGINS.md<CR>', { desc = 'Open [H]elp [P]lugins documentation' })
+
+-- Quickfix navigation
+vim.keymap.set('n', ']q', '<cmd>cnext<CR>zz', { desc = 'Next quickfix item' })
+vim.keymap.set('n', '[q', '<cmd>cprev<CR>zz', { desc = 'Previous quickfix item' })
+vim.keymap.set('n', '<leader>qc', '<cmd>cclose<CR>', { desc = '[Q]uickfix [C]lose' })
+
+-- Spell checking
+vim.keymap.set('n', '<leader>ts', function()
+  vim.opt.spell = not vim.opt.spell:get()
+  print("Spell checking: " .. (vim.opt.spell:get() and "ON" or "OFF"))
+end, { desc = '[T]oggle [S]pell checking' })
+
+vim.keymap.set('n', '<leader>zu', 'zuw', { desc = '[Z]pell [U]ndo (remove word from dictionary)' })
+
+vim.keymap.set('n', 'z=', function()
+  local cursor_word = vim.fn.expand('<cword>')
+  if cursor_word == '' then
+    return
+  end
+
+  local suggestions = vim.fn.spellsuggest(cursor_word)
+  local results = { "Add '" .. cursor_word .. "' to dictionary" }
+  for _, s in ipairs(suggestions) do
+    table.insert(results, s)
+  end
+
+  local pickers = require('telescope.pickers')
+  local finders = require('telescope.finders')
+  local conf = require('telescope.config').values
+  local actions = require('telescope.actions')
+  local action_state = require('telescope.actions.state')
+  local themes = require('telescope.themes')
+
+  pickers
+    .new(themes.get_cursor(), {
+      prompt_title = 'Spell Suggestions',
+      finder = finders.new_table({
+        results = results,
+      }),
+      sorter = conf.generic_sorter({}),
+      attach_mappings = function(prompt_bufnr, map)
+        actions.select_default:replace(function()
+          local selection = action_state.get_selected_entry()
+          actions.close(prompt_bufnr)
+          if selection.index == 1 then
+            vim.cmd('spellgood ' .. vim.fn.fnameescape(cursor_word))
+          else
+            -- selection.index is 2 for the first suggestion, which corresponds to 1z=
+            vim.cmd('normal! ' .. (selection.index - 1) .. 'z=')
+          end
+        end)
+        return true
+      end,
+    })
+    :find()
+end, { desc = 'Spell suggestions via Telescope with Add to Dictionary' })
+

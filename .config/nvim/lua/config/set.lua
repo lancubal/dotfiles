@@ -58,3 +58,16 @@ vim.opt.backup = false
 vim.opt.undodir = os.getenv('HOME') .. '/.config/nvim/undodir'
 vim.opt.undofile = true
 vim.opt.conceallevel = 2
+
+-- Spell checking defaults
+vim.opt.spelllang = { 'es', 'en' } -- Spanish and English
+vim.opt.spell = false             -- Disabled by default
+
+-- Enable spell checking automatically for certain file types
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'markdown', 'text', 'gitcommit' },
+  callback = function()
+    vim.wo.spell = true
+    vim.opt_local.spelllang = { 'es', 'en' }
+  end,
+})

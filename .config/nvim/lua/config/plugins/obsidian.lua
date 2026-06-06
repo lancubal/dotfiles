@@ -10,13 +10,21 @@ return {
     workspaces = {
       {
         name = "personal",
-        path = "/home/luna/.obsidian-notes",
+        path = "/home/luna/obsidian-notes",
       },
     },
     completion = {
       nvim_cmp = false, -- We use blink.cmp
       min_chars = 2,
     },
+    -- Control how notes are named
+    note_id_func = function(title)
+      -- Use the title as the note ID, fallback to timestamp if no title
+      if title ~= nil then
+        return title
+      end
+      return tostring(os.time())
+    end,
     mappings = {
       -- "Obsidian follow" - salta al link bajo el cursor
       ["gf"] = {
@@ -31,6 +39,13 @@ return {
           return require("obsidian").util.toggle_checkbox()
         end,
         opts = { buffer = true },
+      },
+      -- Renombrar nota y actualizar referencias
+      ["<leader>rn"] = {
+        action = function()
+          return ":ObsidianRename "
+        end,
+        opts = { buffer = true, expr = true },
       },
     },
     -- Configuración de cómo se ven los links
