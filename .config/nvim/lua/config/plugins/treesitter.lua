@@ -19,9 +19,13 @@ return {
         'regex',
         'markdown',
         'markdown_inline',
+        'haskell',
         'latex',
         'lua',
         'query',
+      },
+      highlight = {
+        enable = true,
       },
       textobjects = {
         move = {
