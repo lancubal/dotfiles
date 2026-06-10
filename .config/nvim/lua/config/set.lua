@@ -68,6 +68,9 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'markdown', 'text', 'gitcommit' },
   callback = function()
     vim.wo.spell = true
+    vim.wo.wrap = true
+    vim.wo.linebreak = true
+    vim.wo.breakindent = true
     vim.opt_local.spelllang = { 'es', 'en' }
   end,
 })
