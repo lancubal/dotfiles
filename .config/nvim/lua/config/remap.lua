@@ -45,6 +45,15 @@ end, { desc = 'Format buffer' })
 
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Smart Rename' })
 
+-- LSP Navigation
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = '[G]o to [D]efinition' })
+vim.keymap.set('n', 'gr', function()
+  require('telescope.builtin').lsp_references()
+end, { desc = '[G]o to [R]eferences (Telescope)' })
+vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = '[G]o to [I]mplementation' })
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation' })
+vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = '[C]ode [A]ction' })
+
 --Buffer navigation
 vim.keymap.set('n', '<Tab>', ':bn<CR>', { desc = 'Switches to next buffer' })
 vim.keymap.set('n', '<S-Tab>', ':bp<CR>', { desc = 'Switches to previous buffer' })
@@ -89,7 +98,7 @@ vim.keymap.set('n', '<leader>e', '<cmd>Oil<CR>', { desc = 'Open Oil explorer' })
 
 -- Git (Neogit & Diffview)
 vim.keymap.set('n', '<leader>gs', '<cmd>Neogit<CR>', { desc = 'Open Neogit [G]it [S]tatus' })
-vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<CR>', { desc = 'Open [G]it [D]iffview' })
+vim.keymap.set('n', '<leader>dv', '<cmd>DiffviewOpen<CR>', { desc = 'Open [G]it [D]iffview' })
 vim.keymap.set('n', '<leader>gh', '<cmd>DiffviewFileHistory %<CR>', { desc = 'Open [G]it [H]istory for current file' })
 vim.keymap.set('n', '<leader>gc', '<cmd>DiffviewClose<CR>', { desc = '[G]it Diffview [C]lose' })
 

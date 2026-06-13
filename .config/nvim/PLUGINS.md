@@ -65,9 +65,9 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | Atajo | Acción | Modo |
 |-------|--------|------|
 | `<leader>gs` | **Neogit**: Abrir panel de estado (Staging, Commits, Push/Pull). | Normal |
-| `<leader>gd` | **Diffview**: Ver todos los cambios del proyecto. | Normal |
-| `<leader>gh` | **File History**: Historial de cambios del archivo actual. | Normal |
-| `<leader>gc` | Cerrar la vista de Diffview. | Normal |
+| `<leader>dv` | **Diffview**: Ver todos los cambios del proyecto. | Normal |
+| `<leader>gh` | **Git History**: Historial de cambios del archivo actual. | Normal |
+| `<leader>gc` | Cerrar Diffview. | Normal |
 
 ### Diagnósticos (Errores y Advertencias)
 | Atajo | Acción | Modo |
