@@ -20,6 +20,7 @@ return {
         'markdown',
         'markdown_inline',
         'haskell',
+        'scala',
         'latex',
         'lua',
         'query',

@@ -158,6 +158,7 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | **nvim-treesitter** | Resaltado de sintaxis inteligente. |
 | **nvim-treesitter-context** | Muestra el bloque/función actual fijo en la parte superior. |
 | **render-markdown.nvim** | Renderiza el Markdown directamente en Neovim (iconos, encabezados, LaTeX). |
+| **nvim-metals** | El mejor soporte para Scala (Metals), incluye autocompletado y navegación. |
 | **markdown-preview.nvim** | Previsualización en tiempo real en el navegador (usa `<leader>mp`). |
 | **obsidian.nvim** | Soporte para bóvedas de Obsidian, links `[[ ]]` y gestión de notas. |
 | **telescope.nvim** | Buscador difuso ultra-rápido. |
