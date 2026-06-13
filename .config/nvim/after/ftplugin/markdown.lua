@@ -6,11 +6,11 @@ vim.keymap.set('v', '<C-b>', 'c**<C-r>"**<Esc>', { buffer = true, desc = "Bold" 
 vim.keymap.set('i', '<C-i>', '**<Left>', { buffer = true, desc = "Italic" })
 vim.keymap.set('v', '<C-i>', 'c*<C-r>"*<Esc>', { buffer = true, desc = "Italic" })
 
--- Auto spell check on save
+-- Auto spell check on save (quiet mode)
 vim.api.nvim_create_autocmd('BufWritePost', {
   buffer = 0,
   callback = function()
-    SpellCheckToQuickfix()
+    SpellCheckToQuickfix({ quiet = true })
   end,
 })
 

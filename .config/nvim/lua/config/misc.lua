@@ -65,41 +65,70 @@ end
 vim.keymap.set('n', '<Leader>tt', Trim, { desc = 'Trimmed ^M line endings' })
 
 -- Spell check current buffer and populate quickfix list
-function SpellCheckToQuickfix()
+function SpellCheckToQuickfix(opts)
+  opts = opts or {}
   local qf_list = {}
   local cursor = vim.api.nvim_win_get_cursor(0)
   local line_count = vim.api.nvim_buf_line_count(0)
 
   for lnum = 1, line_count do
     local line = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1]
-    local col = 0
-    while col < #line do
-      local res = vim.fn.spellbadword(line:sub(col + 1))
-      local badword = res[1]
-      if badword == "" then
-        break
-      end
+    if line then
+      local col = 0
+      while col < #line do
+        local res = vim.fn.spellbadword(line:sub(col + 1))
+        local badword = res[1]
+        if badword == "" then
+          break
+        end
 
-      local start_idx = line:find(badword, col + 1, true)
-      if not start_idx then
-        break
-      end
+        local start_idx = line:find(badword, col + 1, true)
+        if not start_idx then
+          break
+        end
 
-      table.insert(qf_list, {
-        bufnr = vim.api.nvim_get_current_buf(),
-        lnum = lnum,
-        col = start_idx,
-        text = "Misspelled: " .. badword,
-        type = 'W',
-      })
-      col = start_idx + #badword
+        -- Treesitter check to ignore code blocks
+        local is_ignored = false
+        local success, node = pcall(vim.treesitter.get_node, { pos = { lnum - 1, start_idx - 1 } })
+        if success and node then
+          local node_type = node:type()
+          -- Check if it's a code-related node in Markdown
+          if node_type:find("code") or node_type:find("fenced") or node_type:find("inline") then
+            is_ignored = true
+          else
+            -- Check parents
+            local parent = node:parent()
+            while parent do
+              local ptype = parent:type()
+              if ptype:find("code") or ptype:find("fenced") then
+                is_ignored = true
+                break
+              end
+              parent = parent:parent()
+            end
+          end
+        end
+
+        if not is_ignored then
+          table.insert(qf_list, {
+            bufnr = vim.api.nvim_get_current_buf(),
+            lnum = lnum,
+            col = start_idx,
+            text = "Misspelled: " .. badword,
+            type = 'W',
+          })
+        end
+        col = start_idx + #badword
+      end
     end
   end
 
   if #qf_list > 0 then
     vim.fn.setqflist(qf_list)
-    vim.cmd('copen')
-    vim.cmd('cfirst')
+    if not opts.quiet then
+      vim.cmd('copen')
+      vim.cmd('cfirst')
+    end
     local has_notify, notify = pcall(require, 'notify')
     if has_notify then
       notify('Found ' .. #qf_list .. ' spelling errors', vim.log.levels.WARN)
@@ -115,7 +144,10 @@ function SpellCheckToQuickfix()
     if qf_open then
       vim.cmd('cclose')
     end
-    vim.api.nvim_win_set_cursor(0, cursor)
+    if not opts.quiet then
+      vim.api.nvim_win_set_cursor(0, cursor)
+    end
   end
 end
+
 
