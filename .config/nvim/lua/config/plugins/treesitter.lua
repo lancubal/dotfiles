@@ -7,7 +7,7 @@ return {
   build = ':TSUpdate',
 
   config = function()
-    require('nvim-treesitter').setup({
+    require('nvim-treesitter.configs').setup({
       ensure_installed = {
         'javascript',
         'typescript',
@@ -27,6 +27,7 @@ return {
       },
       highlight = {
         enable = true,
+        additional_vim_regex_highlighting = false,
       },
       textobjects = {
         move = {
@@ -54,6 +55,9 @@ return {
 
     vim.api.nvim_create_autocmd('FileType', {
       pattern = {
+        'markdown',
+        'scala',
+        'haskell',
         'dart',
         'javascript',
         'javascriptreact',
