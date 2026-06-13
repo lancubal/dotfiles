@@ -13,13 +13,15 @@ return {
         c = { 'clang-format' },
         cpp = { 'clang-format' },
         java = { 'google-java-format' },
+        markdown = { 'injected' },
+        scala = { 'scalafmt' },
       },
     })
 
     vim.api.nvim_create_autocmd('BufWritePre', {
       pattern = '*',
       callback = function(args)
-        require('conform').format({ bufnr = args.buf })
+        require('conform').format({ bufnr = args.buf, lsp_fallback = true })
       end,
     })
   end,
