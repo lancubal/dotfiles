@@ -13,8 +13,6 @@ return {
         c = { 'clang-format' },
         cpp = { 'clang-format' },
         java = { 'google-java-format' },
-        markdown = { 'injected' },
-        scala = { 'scalafmt' },
       },
     })
 
