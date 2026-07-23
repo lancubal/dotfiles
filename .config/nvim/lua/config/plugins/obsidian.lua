@@ -10,7 +10,7 @@ return {
     workspaces = {
       {
         name = "personal",
-        path = "/home/luna/obsidian-notes",
+        path = "/home/luna/Documents/Notas",
       },
     },
     completion = {
