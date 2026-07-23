@@ -168,6 +168,7 @@
    luarocks
    lua5_1
    mercurial
+   go
   ];
 
   services.flatpak.enable = true;
