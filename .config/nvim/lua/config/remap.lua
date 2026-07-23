@@ -102,9 +102,11 @@ vim.keymap.set('n', '<leader>gc', '<cmd>DiffviewClose<CR>', { desc = '[G]it Diff
 vim.keymap.set('n', '<leader>st', function()
   vim.cmd.vnew()
   vim.cmd.term()
+  vim.bo.bufhidden = 'wipe'
   vim.cmd.wincmd('J')
   vim.api.nvim_win_set_height(0, 15)
 end, { desc = 'Terminal split bottom' })
+
 
 -- Terminal mode escape
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })

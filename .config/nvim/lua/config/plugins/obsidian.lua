@@ -10,7 +10,19 @@ return {
     workspaces = {
       {
         name = "personal",
-        path = "/home/luna/Documents/Notas",
+        path = function()
+          local candidates = {
+            vim.fn.expand("~/Documents/Notas"),
+            vim.fn.expand("~/obsidian-notes"),
+            vim.fn.expand("~/Notas"),
+          }
+          for _, path in ipairs(candidates) do
+            if vim.fn.isdirectory(path) == 1 then
+              return path
+            end
+          end
+          return vim.fn.expand("~/Documents/Notas")
+        end,
       },
     },
     completion = {

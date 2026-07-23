@@ -30,3 +30,4 @@ set -gx PATH "$PATH:/home/luna/.local/share/coursier/bin"
 
 # Add ~/.local/bin to PATH (for agy and user binaries)
 fish_add_path ~/.local/bin
+

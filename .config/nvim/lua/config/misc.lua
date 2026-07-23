@@ -150,4 +150,12 @@ function SpellCheckToQuickfix(opts)
   end
 end
 
+-- Terminal buffers: automatically wipe buffer when window is closed
+vim.api.nvim_create_autocmd('TermOpen', {
+  desc = 'Wipe terminal buffer on window close',
+  group = vim.api.nvim_create_augroup('custom-terminal-autowipe', { clear = true }),
+  callback = function()
+    vim.bo.bufhidden = 'wipe'
+  end,
+})
 
