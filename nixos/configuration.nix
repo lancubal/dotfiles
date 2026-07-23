@@ -167,6 +167,7 @@
    libnotify
    luarocks
    lua5_1
+   mercurial
   ];
 
   services.flatpak.enable = true;
