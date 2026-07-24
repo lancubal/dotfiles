@@ -143,10 +143,11 @@
    pass
    obsidian
    unzip
+   p7zip
    gnupg
    pinentry-curses
    vscode 
-#   tidal
+   tidal-hifi
    nodejs 
    python3 
    docker-compose
@@ -187,7 +188,7 @@ programs.gnupg.agent = {
 fileSystems."/mnt/fast-games" = {
  device = "/dev/disk/by-label/FAST_GAMES";
  fsType = "ntfs-3g";
- options = ["rw" "uid=1000" "gid=100" "dmask=007" "fmask=117" "nofail" ];
+ options = ["rw" "uid=1000" "gid=100" "umask=000" "exec" "nofail" ];
 };
 
 fileSystems."/mnt/hdd1" = {
