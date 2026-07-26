@@ -177,6 +177,7 @@
    ruby
    php
    phpPackages.composer
+   julia
   ];
 
   services.flatpak.enable = true;
