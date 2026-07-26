@@ -179,6 +179,8 @@
    phpPackages.composer
    julia
    calibre
+   wl-clipboard
+   xclip
   ];
 
   services.flatpak.enable = true;
