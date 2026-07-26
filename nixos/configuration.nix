@@ -175,6 +175,8 @@
    rustc
    tree-sitter
    ruby
+   php
+   phpPackages.composer
   ];
 
   services.flatpak.enable = true;
