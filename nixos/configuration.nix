@@ -173,6 +173,7 @@
    tor-browser
    cargo
    rustc
+   tree-sitter
   ];
 
   services.flatpak.enable = true;
