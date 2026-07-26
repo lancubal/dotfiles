@@ -149,7 +149,7 @@
    vscode 
    tidal-hifi
    nodejs 
-   python3 
+   (python3.withPackages (ps: with ps; [ pip ]))
    docker-compose
    wireshark
    gcc
