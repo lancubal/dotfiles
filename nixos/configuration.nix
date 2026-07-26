@@ -178,6 +178,7 @@
    php
    phpPackages.composer
    julia
+   calibre
   ];
 
   services.flatpak.enable = true;
