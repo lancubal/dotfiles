@@ -174,6 +174,7 @@
    cargo
    rustc
    tree-sitter
+   ruby
   ];
 
   services.flatpak.enable = true;
