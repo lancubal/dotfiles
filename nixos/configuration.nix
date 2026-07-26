@@ -181,7 +181,14 @@
    calibre
    wl-clipboard
    xclip
+   solaar
+   logiops
+   input-remapper
   ];
+
+  # Soporte para dispositivos inalámbricos Logitech (MX Master 3S)
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
 
   services.flatpak.enable = true;
   virtualisation.docker.enable = true;
