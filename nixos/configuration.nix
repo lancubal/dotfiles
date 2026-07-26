@@ -171,6 +171,8 @@
    mercurial
    go
    tor-browser
+   cargo
+   rustc
   ];
 
   services.flatpak.enable = true;
