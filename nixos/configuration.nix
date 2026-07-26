@@ -170,6 +170,7 @@
    lua5_1
    mercurial
    go
+   tor-browser
   ];
 
   services.flatpak.enable = true;
@@ -242,7 +243,7 @@ fileSystems."/mnt/arcade-vault" = {
       ];
     };
 
-    # --- MODO 3: ARCADE TV ---
+   # --- MODO 3: ARCADE TV ---
     arcade-tv.configuration = {
       system.nixos.tags = [ "Arcade-TV" ];
       
@@ -259,13 +260,18 @@ fileSystems."/mnt/arcade-vault" = {
       };
       programs.gamemode.enable = true;
       
-      environment.systemPackages = with pkgs; [
-        kodi # Media center para el TV
-      ];
-    };
+      # ------------------------------------------------------------
+      # PUNTO 1 & 3: AUTO-LOGIN Y ARRANQUE DE STEAM BIG PICTURE
+      # ------------------------------------------------------------
+      # Habilitamos el inicio de sesión automático sin contraseña
+      services.displayManager.autoLogin.enable = true;
+      services.displayManager.autoLogin.user = "luna";
+      
+      # En lugar de abrir KDE Plasma, forzamos la sesión de Gamescope + Steam
+      services.displayManager.defaultSession = "steam";
 
+    }; 
   };
-
   # ================================================================
   # CONFIGURACIÓN DE VIDEO (AMD GPU)
   # ================================================================
