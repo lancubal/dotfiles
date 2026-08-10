@@ -14,3 +14,20 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   end,
 })
 
+-- Dynamic wrap: Enable wrap only when the current line exceeds window width
+local wrap_group = vim.api.nvim_create_augroup('MarkdownDynamicWrap', { clear = true })
+vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'BufEnter' }, {
+  buffer = 0,
+  group = wrap_group,
+  callback = function()
+    local line_len = #vim.api.nvim_get_current_line()
+    local win_width = vim.api.nvim_win_get_width(0)
+    if line_len > win_width then
+      vim.wo.wrap = true
+      vim.wo.linebreak = true
+    else
+      vim.wo.wrap = false
+    end
+  end,
+})
+

@@ -116,6 +116,10 @@ vim.keymap.set('i', '<C-BS>', '<C-w>', { desc = 'Delete word backwards' })
 vim.keymap.set('i', '<C-H>', '<C-w>', { desc = 'Delete word backwards' })
 vim.keymap.set('i', '<C-Del>', '<C-o>dw', { desc = 'Delete word forward' })
 
+-- Undo in insert mode
+vim.keymap.set('i', '<C-z>', '<C-o>u', { desc = 'Undo in insert mode' })
+
+
 -- Add empty lines
 vim.keymap.set('n', '<CR>', 'm`o<Esc>``', { desc = 'Add empty line below' })
 vim.keymap.set('n', '<S-CR>', 'm`O<Esc>``', { desc = 'Add empty line above' })
