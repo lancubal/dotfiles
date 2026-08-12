@@ -184,6 +184,8 @@
    solaar
    logiops
    input-remapper
+   gimp
+   krita
   ];
 
   # Soporte para dispositivos inalámbricos Logitech (MX Master 3S)
