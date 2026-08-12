@@ -186,6 +186,8 @@
    input-remapper
    gimp
    krita
+   libreoffice-fresh
+   onlyoffice-desktopeditors
   ];
 
   # Soporte para dispositivos inalámbricos Logitech (MX Master 3S)
