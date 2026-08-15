@@ -58,6 +58,9 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | `gf` | Seguir link de Obsidian `[[nota]]` (Go Follow). Crea la nota si no existe. | Normal |
 | `<leader>rn` | **Renombrar Nota**: Renombra el archivo actual y actualiza todos sus links. | Normal |
 | `<leader>ch` | Alternar checkbox de una tarea (`- [ ]`). | Normal |
+| `<leader>lw` | **Line Wrap**: Previsualizar línea actual en ventana flotante con ajuste de línea (wrap). | Normal |
+| `<leader>tw` | **Toggle Wrap**: Alternar ajuste de línea (wrap) en el buffer actual. | Normal |
+
 
 *Nota: Al guardar un archivo Markdown (`:w`), se realizará automáticamente una revisión ortográfica y se mostrarán los errores en la lista Quickfix si existen.*
 
@@ -101,8 +104,11 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | Atajo | Acción | Modo |
 |-------|--------|------|
 | `<leader>s` | Buscar y reemplazar palabra bajo el cursor en todo el archivo. | Normal |
+| `<leader>sk` / `<leader>fk` | **Buscar Atajos**: Ventana emergente interactiva para consultar y buscar shortcuts (Telescope). | Normal |
 | `<leader>hp` | **Ayuda**: Abrir esta guía de atajos en una nueva pestaña. | Normal |
+| `<C-z>` | **Deshacer** (Undo en modo Insert). | Insert |
 | `<leader><Space>` | Formatear el código (LSP). | Normal |
+
 | `gcc` | Comentar/Descomentar línea. | Normal |
 | `<leader><Tab>` | **Indentar**: Mover línea o selección a la derecha. | Normal/Visual |
 | `<leader><S-Tab>` | **De-indentar**: Mover línea o selección a la izquierda. | Normal/Visual |
@@ -125,11 +131,13 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 ### Telescope (Buscador Difuso)
 | Atajo | Acción |
 |-------|--------|
+| `<leader>sk` / `<leader>fk` | **Buscar Atajos**: Ventana emergente para buscar shortcuts y ayuda (PLUGINS.md). |
 | `<leader>ff` | Buscar archivos por nombre. |
 | `<leader>fs` | Buscar texto dentro de todos los archivos (Grep). |
 | `<leader>fb` | Listar y buscar en buffers abiertos. |
 | `<leader>fr` | Archivos abiertos recientemente. |
 | `<leader>/` | Búsqueda difusa dentro del archivo actual. |
+
 
 ### Oil.nvim (Explorador de Archivos)
 *Te permite editar tu sistema de archivos como si fuera un buffer de texto.*
