@@ -85,7 +85,7 @@ return {
       local conf = require('telescope.config').values
       local actions = require('telescope.actions')
       local action_state = require('telescope.actions.state')
-      local entry_display = require('telescope.entry_display')
+      local entry_display = require('telescope.pickers.entry_display')
 
       local displayer = entry_display.create({
         separator = ' │ ',
