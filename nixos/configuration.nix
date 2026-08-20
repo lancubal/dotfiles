@@ -188,6 +188,7 @@
    krita
    libreoffice-fresh
    onlyoffice-desktopeditors
+   zoom-us
   ];
 
   # Soporte para dispositivos inalámbricos Logitech (MX Master 3S)
