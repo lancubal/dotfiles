@@ -129,6 +129,14 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | `<Esc><Esc>` | Salir del modo terminal (volver a modo normal). | Terminal |
 | `<Esc>` | Limpiar el resaltado de búsqueda. | Normal |
 
+### 💾 Sesiones (Gestor de Sesión)
+*Al iniciar Neovim, te preguntará automáticamente si deseas restaurar la última sesión activa.*
+| Atajo | Acción | Modo |
+|-------|--------|------|
+| `<leader>rs` | **Restaurar Sesión**: Cargar la última sesión guardada (ventanas, buffers, pestañas). | Normal |
+| `<leader>ss` | **Guardar Sesión**: Guardar manualmente el estado actual de Neovim. | Normal |
+
+
 ### Telescope (Buscador Difuso)
 | Atajo | Acción |
 |-------|--------|
