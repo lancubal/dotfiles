@@ -269,17 +269,19 @@ local function spell_auto_check()
             actions.close(prompt_bufnr)
             if not selection then return end
 
-            local val = selection.value
+            local view = vim.fn.winsaveview()
 
             if val.type == 'replace' then
               local pattern = string.format([[\<%s\>]], vim.fn.escape(word, [[/\]]))
               local replacement = vim.fn.escape(val.replacement, [[/\]])
               pcall(vim.cmd, string.format('keeppatterns %%s/%s/%s/gI', pattern, replacement))
+              vim.fn.winrestview(view)
             elseif val.type == 'add' then
               vim.cmd('spellgood ' .. vim.fn.fnameescape(word))
             elseif val.type == 'skip' then
               -- continue to next
             end
+
 
 
             -- Jump to next error automatically
