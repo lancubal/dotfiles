@@ -232,7 +232,7 @@ local function spell_auto_check()
     local suggestions = vim.fn.spellsuggest(word, 10)
     local results = {}
     for idx, s in ipairs(suggestions) do
-      table.insert(results, { type = 'replace', idx = idx, text = s })
+      table.insert(results, { type = 'replace', idx = idx, replacement = s, text = s })
     end
     table.insert(results, { type = 'add', text = "➕ Añadir '" .. word .. "' al diccionario personal (zg)" })
     table.insert(results, { type = 'skip', text = "⏭️  Saltar este error (Ignorar)" })
@@ -272,12 +272,15 @@ local function spell_auto_check()
             local val = selection.value
 
             if val.type == 'replace' then
-              vim.cmd('normal! ' .. val.idx .. 'z=')
+              local pattern = string.format([[\<%s\>]], vim.fn.escape(word, [[/\]]))
+              local replacement = vim.fn.escape(val.replacement, [[/\]])
+              pcall(vim.cmd, string.format('keeppatterns %%s/%s/%s/gI', pattern, replacement))
             elseif val.type == 'add' then
               vim.cmd('spellgood ' .. vim.fn.fnameescape(word))
             elseif val.type == 'skip' then
               -- continue to next
             end
+
 
             -- Jump to next error automatically
             vim.defer_fn(function()
