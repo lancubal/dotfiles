@@ -36,8 +36,8 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | Atajo | Acción | Modo |
 |-------|--------|------|
 | `<leader>ts` | **Toggle Spell**: Activar/Desactivar corrector ortográfico. | Normal |
+| `<leader>za` / `<leader>zs` | **Zpell Auto**: Modo automático continuo. Salta al primer error, muestra opciones, corriges y salta automáticamente al siguiente hasta terminar. | Normal |
 | `z=` | Ver sugerencias de corrección (Menú Telescope) + Opción "Add to dictionary". | Normal |
-| `<leader>zn` | **Zpell Next**: Salta al siguiente error y abre sugerencias. | Normal |
 | `<leader>zu` | **Undo Spell**: Eliminar palabra bajo el cursor del diccionario personal. | Normal |
 | `]q` | Siguiente error ortográfico (en la lista Quickfix). | Normal |
 | `[q` | Anterior error ortográfico (en la lista Quickfix). | Normal |
@@ -45,6 +45,7 @@ En el ecosistema de Neovim/Vim, verás estas abreviaturas:
 | `]s` | Saltar a la siguiente falta de ortografía. | Normal |
 | `[s` | Volver a la falta de ortografía anterior. | Normal |
 | `zg` | Añadir palabra bajo el cursor al diccionario personal. | Normal |
+
 | `<leader>d` | Mostrar detalle de error gramatical (LTeX) o de código. | Normal |
 
 ---

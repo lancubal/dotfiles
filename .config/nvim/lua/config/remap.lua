@@ -193,16 +193,161 @@ end
 
 vim.keymap.set('n', 'z=', spell_suggest, { desc = 'Spell suggestions via Telescope with Add to Dictionary' })
 
-vim.keymap.set('n', '<leader>zn', function()
-  -- Try to go to next quickfix item, then open suggestions
-  local ok, _ = pcall(vim.cmd, 'cnext')
-  if ok then
-    vim.cmd('normal! zz')
-    -- Small delay to let cursor move before capturing word
-    vim.defer_fn(spell_suggest, 10)
-  else
-    print("No more spelling errors.")
+local function is_in_code_block()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local lnum, col = cursor[1], cursor[2]
+  local success, node = pcall(vim.treesitter.get_node, { pos = { lnum - 1, col } })
+  if success and node then
+    local node_type = node:type()
+    if node_type:find("code") or node_type:find("fenced") or node_type:find("inline") then
+      return true
+    end
+    local parent = node:parent()
+    while parent do
+      local ptype = parent:type()
+      if ptype:find("code") or ptype:find("fenced") then
+        return true
+      end
+      parent = parent:parent()
+    end
   end
-end, { desc = '[Z]pell [N]ext: jump to next error and suggest' })
+  return false
+end
+
+local function get_next_spell_error(prev_pos)
+  while true do
+    local before = vim.api.nvim_win_get_cursor(0)
+    vim.cmd('normal! ]s')
+    local after = vim.api.nvim_win_get_cursor(0)
+
+    -- If cursor didn't move forward or wrapped around
+    if (after[1] < before[1]) or (after[1] == before[1] and after[2] <= before[2]) then
+      return false
+    end
+    if prev_pos and ((after[1] < prev_pos[1]) or (after[1] == prev_pos[1] and after[2] <= prev_pos[2])) then
+      return false
+    end
+
+    local badword = vim.fn.spellbadword()[1]
+    if badword ~= "" then
+      if not is_in_code_block() then
+        return true
+      end
+    else
+      return false
+    end
+  end
+end
+
+-- Automatic interactive Spell Check Wizard (<leader>za)
+local function spell_auto_check()
+  vim.opt.spell = true
+
+  -- Start from the beginning of the file
+  vim.api.nvim_win_set_cursor(0, { 1, 0 })
+  local found = false
+  local bad = vim.fn.spellbadword()[1]
+  if bad ~= "" and not is_in_code_block() then
+    found = true
+  else
+    found = get_next_spell_error({ 1, -1 })
+  end
+
+  if not found then
+    local has_notify, notify = pcall(require, 'notify')
+    if has_notify then
+      notify('✅ No se encontraron errores ortográficos', vim.log.levels.INFO)
+    else
+      print('✅ No se encontraron errores ortográficos')
+    end
+    return
+  end
+
+  local function step()
+    local cursor_word = vim.fn.expand('<cword>')
+    if cursor_word == '' then
+      return
+    end
+
+    local suggestions = vim.fn.spellsuggest(cursor_word, 10)
+    local results = {}
+    for idx, s in ipairs(suggestions) do
+      table.insert(results, { type = 'replace', idx = idx, text = s })
+    end
+    table.insert(results, { type = 'add', text = "➕ Añadir '" .. cursor_word .. "' al diccionario personal (zg)" })
+    table.insert(results, { type = 'skip', text = "⏭️  Saltar este error (Ignorar)" })
+
+    local pickers = require('telescope.pickers')
+    local finders = require('telescope.finders')
+    local conf = require('telescope.config').values
+    local actions = require('telescope.actions')
+    local action_state = require('telescope.actions.state')
+    local themes = require('telescope.themes')
+
+    pickers
+      .new(themes.get_cursor({
+        layout_config = {
+          width = 55,
+          height = math.min(#results + 4, 15),
+        },
+      }), {
+        prompt_title = "Corrección: '" .. cursor_word .. "'",
+        finder = finders.new_table({
+          results = results,
+          entry_maker = function(entry)
+            return {
+              value = entry,
+              display = entry.text,
+              ordinal = entry.text,
+            }
+          end,
+        }),
+        sorter = conf.generic_sorter({}),
+        attach_mappings = function(prompt_bufnr, map)
+          actions.select_default:replace(function()
+            local selection = action_state.get_selected_entry()
+            actions.close(prompt_bufnr)
+            if not selection then return end
+
+            local val = selection.value
+            local cur_pos = vim.api.nvim_win_get_cursor(0)
+
+            if val.type == 'replace' then
+              vim.cmd('normal! ' .. val.idx .. 'z=')
+            elseif val.type == 'add' then
+              vim.cmd('spellgood ' .. vim.fn.fnameescape(cursor_word))
+            elseif val.type == 'skip' then
+              -- continue to next
+            end
+
+            -- Jump to next error automatically
+            vim.defer_fn(function()
+              local has_next = get_next_spell_error(cur_pos)
+              if has_next then
+                vim.cmd('normal! zz')
+                step()
+              else
+                local has_notify, notify = pcall(require, 'notify')
+                if has_notify then
+                  notify('🎉 ¡Revisión completada! No quedan más errores.', vim.log.levels.INFO)
+                else
+                  print('🎉 ¡Revisión completada! No quedan más errores.')
+                end
+              end
+            end, 30)
+          end)
+          return true
+        end,
+      })
+      :find()
+  end
+
+  vim.cmd('normal! zz')
+  step()
+end
+
+vim.keymap.set('n', '<leader>za', spell_auto_check, { desc = '[Z]pell [A]uto: wizard interactivo de corrección continua' })
+vim.keymap.set('n', '<leader>zs', spell_auto_check, { desc = '[Z]pell [S]tart: wizard interactivo de corrección continua' })
+
 
 
