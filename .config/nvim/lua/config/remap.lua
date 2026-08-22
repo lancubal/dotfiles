@@ -148,11 +148,38 @@ end, { desc = '[T]oggle [S]pell checking' })
 
 vim.keymap.set('n', '<leader>zu', 'zuw', { desc = '[Z]pell [U]ndo (remove word from dictionary)' })
 
+local spell_ns = vim.api.nvim_create_namespace('spell_correct_hl')
+
+local function highlight_current_spell_word()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local lnum = cursor[1] - 1
+  local col = cursor[2]
+  local line = vim.api.nvim_get_current_line()
+  local m = vim.fn.matchstrpos(line, [[\k*\%]] .. (col + 1) .. [[c\k*]])
+  local start_col = (m[2] and m[2] ~= -1) and m[2] or col
+  local end_col = (m[3] and m[3] ~= -1) and m[3] or (col + #vim.fn.expand('<cword>'))
+
+  vim.api.nvim_buf_clear_namespace(bufnr, spell_ns, 0, -1)
+  pcall(vim.api.nvim_buf_set_extmark, bufnr, spell_ns, lnum, start_col, {
+    end_col = end_col,
+    hl_group = 'CurSearch',
+    priority = 200,
+  })
+end
+
+local function clear_spell_highlight()
+  local bufnr = vim.api.nvim_get_current_buf()
+  vim.api.nvim_buf_clear_namespace(bufnr, spell_ns, 0, -1)
+end
+
 local function spell_suggest()
   local cursor_word = vim.fn.expand('<cword>')
   if cursor_word == '' then
     return
   end
+
+  highlight_current_spell_word()
 
   local suggestions = vim.fn.spellsuggest(cursor_word)
   local results = { "Add '" .. cursor_word .. "' to dictionary" }
@@ -175,9 +202,20 @@ local function spell_suggest()
       }),
       sorter = conf.generic_sorter({}),
       attach_mappings = function(prompt_bufnr, map)
+        local cleanup = function()
+          actions.close(prompt_bufnr)
+          clear_spell_highlight()
+        end
+
+        map('i', '<Esc>', cleanup)
+        map('n', '<Esc>', cleanup)
+        map('n', 'q', cleanup)
+
         actions.select_default:replace(function()
           local selection = action_state.get_selected_entry()
-          actions.close(prompt_bufnr)
+          cleanup()
+          if not selection then return end
+
           if selection.index == 1 then
             vim.cmd('spellgood ' .. vim.fn.fnameescape(cursor_word))
           else
@@ -208,6 +246,7 @@ local function spell_auto_check()
   local initial_bad = vim.fn.spellbadword()[1]
   local initial_word = vim.fn.expand('<cword>')
   if initial_bad == "" or initial_word == "" then
+    clear_spell_highlight()
     local has_notify, notify = pcall(require, 'notify')
     if has_notify then
       notify('✅ No se encontraron errores ortográficos', vim.log.levels.INFO)
@@ -220,6 +259,7 @@ local function spell_auto_check()
   local function step()
     local word = vim.fn.expand('<cword>')
     if word == '' or vim.fn.spellbadword()[1] == '' then
+      clear_spell_highlight()
       local has_notify, notify = pcall(require, 'notify')
       if has_notify then
         notify('🎉 ¡Revisión completada! No quedan más errores.', vim.log.levels.INFO)
@@ -228,6 +268,8 @@ local function spell_auto_check()
       end
       return
     end
+
+    highlight_current_spell_word()
 
     local suggestions = vim.fn.spellsuggest(word, 10)
     local results = {}
@@ -264,9 +306,18 @@ local function spell_auto_check()
         }),
         sorter = conf.generic_sorter({}),
         attach_mappings = function(prompt_bufnr, map)
+          local cleanup = function()
+            actions.close(prompt_bufnr)
+            clear_spell_highlight()
+          end
+
+          map('i', '<Esc>', cleanup)
+          map('n', '<Esc>', cleanup)
+          map('n', 'q', cleanup)
+
           actions.select_default:replace(function()
             local selection = action_state.get_selected_entry()
-            actions.close(prompt_bufnr)
+            cleanup()
             if not selection then return end
 
             local val = selection.value
@@ -283,8 +334,6 @@ local function spell_auto_check()
               -- continue to next
             end
 
-
-
             -- Jump to next error automatically
             vim.defer_fn(function()
               local prev_pos = vim.api.nvim_win_get_cursor(0)
@@ -298,6 +347,7 @@ local function spell_auto_check()
                 vim.cmd('normal! zz')
                 step()
               else
+                clear_spell_highlight()
                 local has_notify, notify = pcall(require, 'notify')
                 if has_notify then
                   notify('🎉 ¡Revisión completada! No quedan más errores.', vim.log.levels.INFO)
@@ -319,7 +369,3 @@ end
 
 vim.keymap.set('n', '<leader>za', spell_auto_check, { desc = '[Z]pell [A]uto: wizard interactivo de corrección continua' })
 vim.keymap.set('n', '<leader>zs', spell_auto_check, { desc = '[Z]pell [S]tart: wizard interactivo de corrección continua' })
-
-
-
-
