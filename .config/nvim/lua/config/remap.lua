@@ -269,6 +269,7 @@ local function spell_auto_check()
             actions.close(prompt_bufnr)
             if not selection then return end
 
+            local val = selection.value
             local view = vim.fn.winsaveview()
 
             if val.type == 'replace' then
