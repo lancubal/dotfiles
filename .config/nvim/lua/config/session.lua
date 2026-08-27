@@ -77,14 +77,23 @@ vim.api.nvim_create_autocmd('VimEnter', {
 
     if vim.fn.filereadable(last_session_file) == 1 then
       vim.defer_fn(function()
-        local choice = vim.fn.confirm('¿Deseas restaurar la última sesión de Neovim?', "&Sí\n&No", 2)
-        if choice == 1 then
+        vim.api.nvim_echo({ { '¿Deseas restaurar la última sesión? [S]í / [N]o: ', 'Question' } }, false, {})
+        local char = vim.fn.getcharstr()
+        vim.cmd('redraw')
+
+        if char == 's' or char == 'S' or char == '1' then
           M.restore_session()
+        elseif char == 'n' or char == 'N' or char == '\27' or char == '\r' or char == ' ' then
+          -- Ignorar y quedarse en el buffer actual
+        else
+          -- Si presionas 'j' (o cualquier otra tecla para empezar a moverte), cancela y ejecuta esa tecla inmediatamente
+          vim.api.nvim_feedkeys(char, 'n', false)
         end
       end, 20)
     end
   end,
 })
+
 
 -- Keymaps
 vim.keymap.set('n', '<leader>rs', M.restore_session, { desc = '[R]estore last [S]ession' })
