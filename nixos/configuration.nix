@@ -147,7 +147,6 @@
    gnupg
    pinentry-curses
    vscode 
-   tidal-hifi
    nodejs 
    (python3.withPackages (ps: with ps; [ pip ]))
    docker-compose
