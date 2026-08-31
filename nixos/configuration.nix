@@ -239,6 +239,7 @@ fileSystems."/mnt/arcade-vault" = {
   # Apagamos el puerto HDMI a nivel DRM para que no exista para el sistema.
   boot.kernelParams = [ 
     "video=HDMI-A-1:d" 
+    "iommu=pt"
   ];
 
   # ================================================================
